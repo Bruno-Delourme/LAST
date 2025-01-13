@@ -1,17 +1,23 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
+import MovieCard from '../MovieCard/MovieCard'
 import './MovieList.css'
 
 function MovieList({ items, type }) {
   const scrollContainerRef = useRef(null)
+  const [expandedCardId, setExpandedCardId] = useState(null)
 
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
-      const scrollAmount = 400 // Ajustez cette valeur selon vos besoins
+      const scrollAmount = 400
       scrollContainerRef.current.scrollBy({
         left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth'
       })
     }
+  }
+
+  const handleCardClick = (id) => {
+    setExpandedCardId(expandedCardId === id ? null : id)
   }
 
   return (
@@ -26,13 +32,12 @@ function MovieList({ items, type }) {
       
       <div className="movie-grid" ref={scrollContainerRef}>
         {items.map(item => (
-          <div key={item.id} className="movie-card">
-            <img 
-              src={item.poster_path}
-              alt={item.title || item.name}
-            />
-            <h3>{item.title || item.name}</h3>
-          </div>
+          <MovieCard 
+            key={item.id} 
+            item={item}
+            isExpanded={expandedCardId === item.id}
+            onClick={() => handleCardClick(item.id)}
+          />
         ))}
       </div>
 

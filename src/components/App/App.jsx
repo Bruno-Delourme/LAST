@@ -7,24 +7,52 @@ import './App.css'
 function App() {
   const [movies, setMovies] = useState([])
   const [series, setSeries] = useState([])
+  const [selectedPlatform, setSelectedPlatform] = useState(null)
 
   useEffect(() => {
-    // Utilisation des données de test au lieu de l'API
-    setMovies(fakeMovies)
-    setSeries(fakeSeries)
+    // Simulation de données avec plateformes
+    const moviesWithPlatforms = fakeMovies.map(movie => ({
+      ...movie,
+      platforms: getRandomPlatforms() // À remplacer par de vraies données plus tard
+    }))
+    const seriesWithPlatforms = fakeSeries.map(series => ({
+      ...series,
+      platforms: getRandomPlatforms() // À remplacer par de vraies données plus tard
+    }))
+
+    setMovies(moviesWithPlatforms)
+    setSeries(seriesWithPlatforms)
   }, [])
+
+  // Fonction temporaire pour simuler les plateformes disponibles
+  const getRandomPlatforms = () => {
+    const allPlatforms = ['Netflix', 'Disney+', 'Prime Video', 'Apple TV+', 'Canal+', 'OCS']
+    return allPlatforms.filter(() => Math.random() > 0.5)
+  }
+
+  const handlePlatformSelect = (platformName) => {
+    setSelectedPlatform(platformName === selectedPlatform ? null : platformName)
+  }
+
+  const filterByPlatform = (items) => {
+    if (!selectedPlatform) return items
+    return items.filter(item => item.platforms.includes(selectedPlatform))
+  }
 
   return (
     <div className="app">
-      <Header />
+      <Header 
+        selectedPlatform={selectedPlatform}
+        onPlatformSelect={handlePlatformSelect}
+      />
       <main>
         <section>
           <h2>Derniers Films</h2>
-          <MovieList items={movies} type="movie" />
+          <MovieList items={filterByPlatform(movies)} type="movie" />
         </section>
         <section>
           <h2>Dernières Séries</h2>
-          <MovieList items={series} type="tv" />
+          <MovieList items={filterByPlatform(series)} type="tv" />
         </section>
       </main>
     </div>

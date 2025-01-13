@@ -1,7 +1,8 @@
 import React from 'react'
+import PlatformList from '../PlatformList/PlatformList'
 import './Header.css'
 
-function Header() {
+function Header({ selectedPlatform, onPlatformSelect }) {
   return (
     <header className="header">
       <div className="header-content">
@@ -17,6 +18,10 @@ function Header() {
           <span className="subtitle">Dernières Sorties</span>
         </div>
       </div>
+      <PlatformList 
+        selectedPlatform={selectedPlatform}
+        onPlatformSelect={onPlatformSelect}
+      />
     </header>
   )
 }

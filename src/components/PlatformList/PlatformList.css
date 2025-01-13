@@ -1,0 +1,85 @@
+.platform-list-container {
+  position: relative;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.platform-list {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 10px 40px;
+  white-space: nowrap;
+}
+
+.platform-list::-webkit-scrollbar {
+  display: none;
+}
+
+.platform-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.platform-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.platform-logo {
+  font-size: 1.2rem;
+}
+
+.platform-name {
+  font-size: 0.9rem;
+  color: white;
+}
+
+.platform-scroll-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+.platform-scroll-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.platform-scroll-left {
+  left: 5px;
+}
+
+.platform-scroll-right {
+  right: 5px;
+}
+
+.platform-item.selected {
+  background: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.platform-item.selected:hover {
+  background: var(--secondary-color);
+} 
