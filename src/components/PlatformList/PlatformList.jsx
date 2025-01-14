@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import './PlatformList.css'
 
 const platforms = [
@@ -16,8 +16,33 @@ const platforms = [
   { id: 12, name: 'Crunchyroll', logo: '🟠' }
 ]
 
+import PropTypes from 'prop-types'
+
 function PlatformList({ selectedPlatform, onPlatformSelect }) {
   const scrollContainerRef = useRef(null)
+  const [showLeftArrow, setShowLeftArrow] = useState(false)
+  const [showRightArrow, setShowRightArrow] = useState(true)
+
+  const checkScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current
+      setShowLeftArrow(scrollLeft > 0)
+      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10)
+    }
+  }
+
+  useEffect(() => {
+    const container = scrollContainerRef.current
+    if (container) {
+      container.addEventListener('scroll', checkScroll)
+      checkScroll()
+    }
+    return () => {
+      if (container) {
+        container.removeEventListener('scroll', checkScroll)
+      }
+    }
+  }, [])
 
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
@@ -31,15 +56,30 @@ function PlatformList({ selectedPlatform, onPlatformSelect }) {
 
   return (
     <div className="platform-list-container">
-      <button 
-        className="platform-scroll-button platform-scroll-left" 
-        onClick={() => scroll('left')}
-        aria-label="Défiler à gauche"
-      >
-        ←
-      </button>
+      {showLeftArrow && (
+        <button 
+          className="platform-scroll-button platform-scroll-left"
+          onClick={() => scroll('left')}
+          aria-label="Défiler à gauche"
+        >
+          <svg 
+            className="arrow-icon" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+      )}
 
-      <div className="platform-list" ref={scrollContainerRef}>
+      <div 
+        className="platform-list" 
+        ref={scrollContainerRef}
+      >
         {platforms.map((platform) => (
           <div 
             key={platform.id} 
@@ -52,13 +92,25 @@ function PlatformList({ selectedPlatform, onPlatformSelect }) {
         ))}
       </div>
 
-      <button 
-        className="platform-scroll-button platform-scroll-right" 
-        onClick={() => scroll('right')}
-        aria-label="Défiler à droite"
-      >
-        →
-      </button>
+      {showRightArrow && (
+        <button 
+          className="platform-scroll-button platform-scroll-right"
+          onClick={() => scroll('right')}
+          aria-label="Défiler à droite"
+        >
+          <svg 
+            className="arrow-icon" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      )}
     </div>
   )
 }

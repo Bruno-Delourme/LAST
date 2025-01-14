@@ -48,30 +48,52 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  background: rgba(255, 255, 255, 0.9);
+  color: rgb(0, 0, 0);
   border: none;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 1;
+  z-index: 2;
   transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .platform-scroll-button:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-50%) scale(1.1);
 }
 
 .platform-scroll-left {
   left: 5px;
+  animation: fadeIn 0.3s ease;
 }
 
 .platform-scroll-right {
   right: 5px;
+  animation: fadeIn 0.3s ease;
+}
+
+.arrow-icon {
+  width: 24px;
+  height: 24px;
+  fill: rgb(0, 0, 0);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
 }
 
 .platform-item.selected {
