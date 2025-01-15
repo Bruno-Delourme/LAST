@@ -14,7 +14,7 @@ function Header({ selectedPlatform, onPlatformSelect }) {
           />
         </div>
         <div className="title-container">
-          <h1>CinéScope</h1>
+          <h1>LAST <span>movie</span></h1>
           <span className="subtitle">Dernières Sorties</span>
         </div>
       </div>
