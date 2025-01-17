@@ -24,3 +24,16 @@ section {
     padding: 0 1rem;
   }
 }
+
+.loading, .error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-size: 1.2rem;
+  color: var(--text-color);
+}
+
+.error {
+  color: #dc3545;
+}

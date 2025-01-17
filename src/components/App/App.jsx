@@ -1,34 +1,38 @@
 import { useState, useEffect } from 'react'
 import MovieList from '../MovieList/MovieList'
 import Header from '../Header/Header'
-import { fakeMovies, fakeSeries } from '../../FakeData/FakeData'
+import { movieService } from '../../services/api'
 import './App.css'
 
 function App() {
   const [movies, setMovies] = useState([])
   const [series, setSeries] = useState([])
   const [selectedPlatform, setSelectedPlatform] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
-    // Simulation de données avec plateformes
-    const moviesWithPlatforms = fakeMovies.map(movie => ({
-      ...movie,
-      platforms: getRandomPlatforms() // À remplacer par de vraies données plus tard
-    }))
-    const seriesWithPlatforms = fakeSeries.map(series => ({
-      ...series,
-      platforms: getRandomPlatforms() // À remplacer par de vraies données plus tard
-    }))
+    const fetchData = async () => {
+      try {
+        setIsLoading(true)
+        const [moviesData, seriesData] = await Promise.all([
+          movieService.getLatestMovies(),
+          movieService.getLatestTVShows()
+        ])
+        
+        setMovies(moviesData)
+        setSeries(seriesData)
+        setError(null)
+      } catch (err) {
+        setError('Erreur lors du chargement des données')
+        console.error('Erreur:', err)
+      } finally {
+        setIsLoading(false)
+      }
+    }
 
-    setMovies(moviesWithPlatforms)
-    setSeries(seriesWithPlatforms)
+    fetchData()
   }, [])
-
-  // Fonction temporaire pour simuler les plateformes disponibles
-  const getRandomPlatforms = () => {
-    const allPlatforms = ['Netflix', 'Disney+', 'Prime Video', 'Apple TV+', 'Canal+', 'OCS']
-    return allPlatforms.filter(() => Math.random() > 0.5)
-  }
 
   const handlePlatformSelect = (platformName) => {
     setSelectedPlatform(platformName === selectedPlatform ? null : platformName)
@@ -37,6 +41,14 @@ function App() {
   const filterByPlatform = (items) => {
     if (!selectedPlatform) return items
     return items.filter(item => item.platforms.includes(selectedPlatform))
+  }
+
+  if (isLoading) {
+    return <div className="loading">Chargement...</div>
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>
   }
 
   return (

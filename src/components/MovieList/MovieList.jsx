@@ -1,10 +1,12 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import MovieCard from '../MovieCard/MovieCard'
 import './MovieList.css'
 
-function MovieList({ items, type }) {
+function MovieList({ items = [], type }) {
   const scrollContainerRef = useRef(null)
   const [expandedCardId, setExpandedCardId] = useState(null)
+
+  const movieItems = Array.isArray(items) ? items : []
 
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
@@ -22,32 +24,40 @@ function MovieList({ items, type }) {
 
   return (
     <div style={{ position: 'relative' }}>
-      <button 
-        className="scroll-button scroll-left" 
-        onClick={() => scroll('left')}
-        aria-label="Défiler à gauche"
-      >
-        ←
-      </button>
-      
-      <div className="movie-grid" ref={scrollContainerRef}>
-        {items.map(item => (
-          <MovieCard 
-            key={item.id} 
-            item={item}
-            isExpanded={expandedCardId === item.id}
-            onClick={() => handleCardClick(item.id)}
-          />
-        ))}
-      </div>
+      {movieItems.length > 0 ? (
+        <>
+          <button 
+            className="scroll-button scroll-left" 
+            onClick={() => scroll('left')}
+            aria-label="Défiler à gauche"
+          >
+            ←
+          </button>
+          
+          <div className="movie-grid" ref={scrollContainerRef}>
+            {movieItems.map(item => (
+              <MovieCard 
+                key={item.id} 
+                item={item}
+                isExpanded={expandedCardId === item.id}
+                onClick={() => handleCardClick(item.id)}
+              />
+            ))}
+          </div>
 
-      <button 
-        className="scroll-button scroll-right" 
-        onClick={() => scroll('right')}
-        aria-label="Défiler à droite"
-      >
-        →
-      </button>
+          <button 
+            className="scroll-button scroll-right" 
+            onClick={() => scroll('right')}
+            aria-label="Défiler à droite"
+          >
+            →
+          </button>
+        </>
+      ) : (
+        <div className="error-message">
+          Aucun contenu disponible
+        </div>
+      )}
     </div>
   )
 }
