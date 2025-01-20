@@ -63,4 +63,61 @@ section {
 
 .scroll-right {
   right: 0;
+}
+
+.movie-list-container {
+  position: relative;
+  width: 100%;
+  padding: 0 40px;
+}
+
+.movie-list {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 1rem;
+  padding: 1rem 0;
+  scrollbar-width: none; /* Pour Firefox */
+  -ms-overflow-style: none; /* Pour IE et Edge */
+}
+
+.movie-list::-webkit-scrollbar {
+  display: none; /* Pour Chrome, Safari et Opera */
+}
+
+.scroll-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 2;
+  transition: background-color 0.3s;
+}
+
+.scroll-button:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.scroll-button.left {
+  left: 0;
+}
+
+.scroll-button.right {
+  right: 0;
+}
+
+/* Animation pour les boutons */
+.scroll-button {
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.scroll-button:hover {
+  opacity: 1;
 } 

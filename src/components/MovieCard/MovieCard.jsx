@@ -1,41 +1,35 @@
-import React from 'react'
+import PropTypes from 'prop-types'
 import './MovieCard.css'
 
-function MovieCard({ item, isExpanded, onClick }) {
-  const platforms = [
-    { name: 'Netflix', icon: '🔴' },
-    { name: 'Prime Video', icon: '🔵' },
-    { name: 'Disney+', icon: '⭐' },
-  ]
+function MovieCard({ item }) {
+  // URL de base pour les images TMDB
+  const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500'
 
   return (
-    <div 
-      className={`movie-card ${isExpanded ? 'expanded' : ''}`}
-      onClick={onClick}
-    >
-      <div className="movie-card-content">
+    <div className="movie-card">
+      {item.poster_path ? (
         <img 
-          src={item.poster_path}
+          src={`${IMAGE_BASE_URL}${item.poster_path}`}
           alt={item.title || item.name}
+          loading="lazy"
         />
-        <h3>{item.title || item.name}</h3>
-      </div>
-      
-      {isExpanded && (
-        <div className="platforms-overlay">
-          <h4>Disponible sur :</h4>
-          <div className="platforms-list">
-            {platforms.map((platform, index) => (
-              <div key={index} className="platform">
-                <span className="platform-icon">{platform.icon}</span>
-                <span className="platform-name">{platform.name}</span>
-              </div>
-            ))}
-          </div>
+      ) : (
+        <div className="movie-card-placeholder">
+          Pas d'image disponible
         </div>
       )}
+      <h3>{item.title || item.name}</h3>
     </div>
   )
+}
+
+MovieCard.propTypes = {
+  item: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string,
+    name: PropTypes.string, // Pour les séries TV
+    poster_path: PropTypes.string
+  }).isRequired
 }
 
 export default MovieCard 
