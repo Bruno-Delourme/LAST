@@ -1,8 +1,11 @@
+import PropTypes from 'prop-types'
 import { useRef, useState } from 'react'
 import MovieCard from '../MovieCard/MovieCard'
 import './MovieList.css'
 
-function MovieList({ items = [], type }) {
+function MovieList({ items = [] }) {
+  console.log('Items reçus:', items); // Pour déboguer
+  
   const scrollContainerRef = useRef(null)
   const [expandedCardId, setExpandedCardId] = useState(null)
 
@@ -59,6 +62,16 @@ function MovieList({ items = [], type }) {
         </div>
       )}
     </div>
+  )
+}
+
+MovieList.propTypes = {
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string,
+      poster_path: PropTypes.string,
+    })
   )
 }
 

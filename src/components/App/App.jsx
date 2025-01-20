@@ -15,17 +15,17 @@ function App() {
     const fetchData = async () => {
       try {
         setIsLoading(true)
-        const [moviesData, seriesData] = await Promise.all([
-          movieService.getLatestMovies(),
-          movieService.getLatestTVShows()
-        ])
-        
-        setMovies(moviesData)
-        setSeries(seriesData)
+        const moviesData = await movieService.getLatestMovies()
+        setMovies(moviesData.results || [])
+
+        const seriesData = await movieService.getLatestTVShows()
+        setSeries(seriesData.results || [])
         setError(null)
-      } catch (err) {
+      } catch (error) {
+        console.error('Erreur:', error)
+        setMovies([])
+        setSeries([])
         setError('Erreur lors du chargement des données')
-        console.error('Erreur:', err)
       } finally {
         setIsLoading(false)
       }
@@ -59,11 +59,11 @@ function App() {
       />
       <main>
         <section>
-          <h2>Derniers Films</h2>
+          <h2>Films à l'affiche</h2>
           <MovieList items={filterByPlatform(movies)} type="movie" />
         </section>
         <section>
-          <h2>Dernières Séries</h2>
+          <h2>Séries populaires</h2>
           <MovieList items={filterByPlatform(series)} type="tv" />
         </section>
       </main>

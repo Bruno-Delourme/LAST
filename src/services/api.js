@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// Création de l'instance axios
 const api = axios.create({
     baseURL: 'http://localhost:3000/api',
     headers: {
@@ -7,6 +8,24 @@ const api = axios.create({
     }
 });
 
+// Optionnel : Intercepteurs pour le logging
+api.interceptors.request.use(request => {
+    console.log('Requête envoyée:', request);
+    return request;
+});
+
+api.interceptors.response.use(
+    response => {
+        console.log('Réponse reçue:', response);
+        return response;
+    },
+    error => {
+        console.error('Erreur API:', error);
+        return Promise.reject(error);
+    }
+);
+
+// Export des méthodes du service
 export const movieService = {
     getLatestMovies: async () => {
         try {
