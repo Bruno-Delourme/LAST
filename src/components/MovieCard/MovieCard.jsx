@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { movieService } from '../../services/api'  // Assurez-vous que le chemin est correct
+import { movieService } from '../../services/api'  // Vérifiez que le chemin est correct
 import './MovieCard.css'
 
 function MovieCard({ item }) {
@@ -13,13 +13,23 @@ function MovieCard({ item }) {
     try {
       if (!showPlatforms) {
         setIsLoading(true)
-        // Appel différent selon le type (film ou série)
-        const response = await movieService.getPlatforms(item.id, item.name ? 'tv' : 'movie')
+        const type = item.name ? 'tv' : 'movie'
+        console.log('Requête plateformes pour:', {
+          id: item.id,
+          type,
+          title: item.title || item.name
+        });
+        const response = await movieService.getPlatforms(item.id, type)
+        console.log('Réponse reçue:', response);
         setPlatforms(response.results || [])
       }
       setShowPlatforms(!showPlatforms)
     } catch (error) {
-      console.error('Erreur lors du chargement des plateformes:', error)
+      console.error('Erreur détaillée:', {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data
+      });
       setPlatforms([])
     } finally {
       setIsLoading(false)

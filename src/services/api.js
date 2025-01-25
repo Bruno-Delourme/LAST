@@ -45,5 +45,18 @@ export const movieService = {
             console.error('Erreur lors de la récupération des séries:', error);
             throw error;
         }
+    },
+
+    getPlatforms: async (id, type) => {
+        try {
+            console.log(`Récupération des plateformes pour ${type} ${id}`);
+            const endpoint = type === 'tv' ? 'tv' : 'movies';
+            const response = await api.get(`/${endpoint}/${id}/platforms`);
+            console.log('Réponse plateformes:', response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Erreur lors de la récupération des plateformes:', error);
+            throw error;
+        }
     }
 }; 
