@@ -49,7 +49,7 @@ function MovieCard({ item }) {
         />
       ) : (
         <div className="movie-card-placeholder">
-          Pas d'image disponible
+          Pas d&aposimage disponible
         </div>
       )}
       <h3>{item.title || item.name}</h3>
